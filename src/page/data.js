@@ -43,9 +43,7 @@ const YourFormComponent = () => {
                 }
             });
         };
-
         getUsers();
-
         // Cleanup the event listener
         return () => {
 
@@ -56,7 +54,7 @@ const YourFormComponent = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const contactRegex = /^\d{11}$/; // Regular expression for 10-digit contact number
+        const contactRegex = /^\d{11}$/; 
         if (!contactRegex.test(contact)) {
             alert('Please enter a valid 10-digit contact number.');
             return;
@@ -95,7 +93,7 @@ const YourFormComponent = () => {
     };
 
     const handleDeleteUser = (userId) => {
-        // Display a confirmation dialog
+
         const isConfirmed = window.confirm('Are you sure you want to delete this user?');
 
         // Check if the user confirmed
@@ -111,7 +109,7 @@ const YourFormComponent = () => {
                     console.error('Failed to delete user:', error);
                 });
         } else {
-            // User clicked "Cancel" or said no
+           
             alert('User deletion canceled.');
         }
     };
@@ -204,7 +202,6 @@ const YourFormComponent = () => {
                     console.error('Failed to delete all orders:', error);
                 });
         } else {
-            // User clicked "Cancel" or said no
             alert('Deletion canceled.');
         }
     };
@@ -217,7 +214,7 @@ const YourFormComponent = () => {
         <div>
             {/* edit */}
             <div className={isVisible ? 'block' : 'hidden'}>
-                <div className={isHide ? 'block w-full h-full edit-form absolute' : 'hidden'} >
+                <div className={isHide ? 'block w-full h-full z-1 edit-form absolute' : 'hidden'} >
                     <div className='flex items-center justify-center h-full'>
                         <div className='relative'>
                             <div className=''>
@@ -226,7 +223,7 @@ const YourFormComponent = () => {
                                 </div>
                                 <h1 className='text-2xl text-center p-2 mt-10 font-bold text-white bg-sky-500 form'>Edit Order</h1>
                             </div>
-                            <form onSubmit={handleSubmit} className='p-3 w-96 bg-white'>
+                            <form onSubmit={handleSubmit} className='p-3  bg-white'>
                                 <input
                                     type="text"
                                     value={name}
@@ -287,28 +284,23 @@ const YourFormComponent = () => {
                     </div>
                 </div>
             </div>
-
-
             <nav>
-                <div className="p-3 flex justify-between text-white mb-3 bg-sky-500">
-                    <h1 className='text-2xl font-bold'>CRUD React</h1>
-                    <div className='gap-3 nav flex text-xl'>
-                        <a href="/">Home </a>|
+                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white mb-3 bg-sky-500">
+                    <h1 className='text-2xl mb-2 font-bold'>CRUD React</h1>
+                    <div className='gap-3 nav  flex md:text-xl'>
+                        <a href="/" >Home </a>|
+                        <a href="/form">Order </a>|
                         <a href="/table" className='active'>Table </a>|
-                        <a href="/form">Order </a>
+                        <a href="/inventory" >Inventory</a>
                     </div>
                 </div>
             </nav>
-
-
-
             <div className="flex justify-center mt-20">
-                <table className="table table-dark table-bordered" style={{ width: '80%' }}>
+                <table className="table table-dark table-bordered lg:w-4/5">
 
                     <thead>
                         <tr>
                             <td colSpan="9" >
-
                                 <div className='flex justify-between'>
                                     <div class="input-wrapper">
                                         <button class="icon">
@@ -324,7 +316,6 @@ const YourFormComponent = () => {
                                         <button onClick={handleDownload} className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded">
                                             <DownloadIcon /> Download as Excel
                                         </button>
-
                                         <button onClick={handleDeleteAll} className="bg-red-500 hover:bg-red-600 text-white p-2 rounded">
                                             <DeleteIcon className='-mt-1' /> Delete All Order
                                         </button>
@@ -332,33 +323,35 @@ const YourFormComponent = () => {
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Contact</th>
-                            <th>Food</th>
+                        <tr class='hidden lg:table-row'>
+                            <th className='text-center'>Name</th>
+                            <th className='text-center'>Address</th>
+                            <th className='text-center'>Contact</th>
+                            <th className='text-center'>Food</th>
                             <th className='w-0 text-center'>Price</th>
                             <th className='w-0 text-center'>Quantity</th>
                             <th className='w-0 text-center'>Total</th>
                             <th className='w-0 text-center'>Delete</th>
                             <th className='w-0 text-center'>Edit</th>
                         </tr>
-
+                        <tr class='hidden'>
+                            <th colspan="9">&nbsp;</th>
+                        </tr>
                     </thead>
                     <tbody>
                         {users.map((user) => (
                             <tr key={user.id}>
-                                <td>{user.username}</td>
-                                <td>{user.address}</td>
-                                <td>{user.contact}</td>
-                                <td>{user.favoriteFood}</td>
-                                <td className='text-center '>{user.price}</td>
-                                <td className='text-center'>{user.quantity}</td>
-                                <td className='text-center'>{user.total}</td>
-                                <td style={{ width: '103px' }} className='text-center' >
+                                <td data-label='username' className='text-center  ' > {user.username}</td>
+                                <td data-label='address' className='text-center  '> {user.address}</td>
+                                <td data-label='contact' className='text-center  '> {user.contact}</td>
+                                <td data-label='favorite food' className='text-center  '> {user.favoriteFood}</td>
+                                <td data-label='price' className='text-center  '> {user.price}</td>
+                                <td data-label='quantity' className='text-center '> {user.quantity}</td>
+                                <td data-label='total' className='text-center '> {user.total}</td>
+                                <td  className='w-full md:w-32 text-center ' >
                                     <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 p-2"><DeleteIcon className='-mt-1' />Delete</button>
                                 </td>
-                                <td style={{ width: '84px' }} className='text-center'>
+                                <td className='w-full md:w-32 text-center'>
                                     <button onClick={() => handleEditUser(user.id, 'username', user.username, 'address', user.address)} className="bg-green-500 p-2">
                                         <ModeEditIcon className='-mt-1' />Edit
                                     </button>
@@ -366,7 +359,6 @@ const YourFormComponent = () => {
                             </tr>
                         ))}
                         <tr >
-
                         </tr>
                     </tbody>
                 </table>

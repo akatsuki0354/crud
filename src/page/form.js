@@ -5,9 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as XLSX from 'xlsx';
 import '../page/style/home.css';
 import '../page/style/form.css'
-
 function Contact() {
-
     const [name, setName] = useState('');
     const [favoriteFood, setFavoriteFood] = useState('');
     const [address, setAdress] = useState('')
@@ -15,23 +13,16 @@ function Contact() {
     const [quantity, setQuantity] = useState(0)
     const [foodPrice, setFoodPrice] = useState(0);
     const [total, setTotal] = useState('');
-
-
-
     const handleSubmit = (e) => {
         e.preventDefault();
-
         const contactRegex = /^\d{11}$/; // Regular expression for 10-digit contact number
         if (!contactRegex.test(contact)) {
             alert('Please enter a valid 10-digit contact number.');
             return;
         }
-
         const userId = uuidv4();
-
         const db = getDatabase();
         const usersRef = ref(db, 'users');
-
         const newUser = {
             username: name,
             quantity: quantity,
@@ -58,10 +49,6 @@ function Contact() {
                 console.error('Failed to add user:', error);
             });
     };
-
-
-
-
 
     const handleQuantityChange = (e) => {
         const quantityValue = parseInt(e.target.value);
@@ -96,10 +83,6 @@ function Contact() {
                 return 0;
         }
     };
-
-
-
-
     return (
         <div className="Contact">
             <div className="t-0 w-full h-full bg-gray-300 order-form absolute">
@@ -108,7 +91,7 @@ function Contact() {
                         <div className=''>
                             <h1 className='text-2xl text-center p-2 font-bold text-white bg-sky-500 form'>Order Form</h1>
                         </div>
-                        <form onSubmit={handleSubmit} className='p-3 bg-white'>
+                        <form onSubmit={handleSubmit} className='p-3 bg-white w-74'>
                             <input
                                 type="text"
                                 value={name}
@@ -125,7 +108,7 @@ function Contact() {
                                 required
                                 className="form-control mb-3"
                             />
-                            <div className="flex gap-3">
+                            <div className="flex flex gap-3">
                                 <div className='flex gap-2'>
                                     <label htmlFor="" className='mt-2'>+63</label>
                                     <input
@@ -140,7 +123,7 @@ function Contact() {
                                         }}
                                         placeholder="Contact Number"
                                         required
-                                        className="form-control w-64 mb-3"
+                                        className="form-control mb-3"
                                     />
                                 </div>
                                 <select className='form-select mb-3 ' onChange={(e) => setFavoriteFood(e.target.value)} >
@@ -159,7 +142,6 @@ function Contact() {
                             <div className='flex gap-2'>
                                 <input type="number" placeholder='quantity' className='form-control ' onChange={handleQuantityChange} required></input>
                                 <input type="number" placeholder='₱ total' className='form-control ' value={total} disabled></input>
-
                             </div>
                             <br />
                             <button type="submit" className="bg-green-600 hover:bg-green-500 text-white p-2 rounded">
@@ -170,18 +152,17 @@ function Contact() {
                 </div>
             </div>
             <nav>
-                <div className="p-3 flex justify-between text-white bg-sky-500">
-                    <h1 className='text-2xl font-bold'>CRUD React</h1>
-                    <div className='gap-3 nav flex text-xl'>
+                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white mb-3 bg-sky-500">
+                    <h1 className='text-2xl mb-2 font-bold'>CRUD React</h1>
+                    <div className='gap-3 nav flex md:text-xl'>
                         <a href="/">Home </a>|
+                        <a href="/form" className='active'>Order </a>|
                         <a href="/table" >Table </a>|
-                        <a href="/form" className='active'>Order </a>
+                        <a href="/inventory" >Inventory</a>
                     </div>
                 </div>
             </nav>
-
         </div>
     );
 }
-
 export default Contact;
