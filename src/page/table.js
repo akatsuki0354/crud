@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CloseIcon from '@mui/icons-material/Close';
 import DownloadIcon from '@mui/icons-material/Download';
+import { Container } from '@mui/material';
 
 const YourFormComponent = () => {
     const [users, setUsers] = useState([]);
@@ -54,7 +55,7 @@ const YourFormComponent = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const contactRegex = /^\d{11}$/; 
+        const contactRegex = /^\d{11}$/;
         if (!contactRegex.test(contact)) {
             alert('Please enter a valid 10-digit contact number.');
             return;
@@ -109,7 +110,7 @@ const YourFormComponent = () => {
                     console.error('Failed to delete user:', error);
                 });
         } else {
-           
+
             alert('User deletion canceled.');
         }
     };
@@ -211,9 +212,9 @@ const YourFormComponent = () => {
 
 
     return (
-        <div>
+        <div className='blurd h-screen'>
             {/* edit */}
-            <div className={isVisible ? 'block' : 'hidden'}>
+            <div className={isVisible ? 'block ' : 'hidden'}>
                 <div className={isHide ? 'block w-full h-full z-1 edit-form absolute' : 'hidden'} >
                     <div className='flex items-center justify-center h-full'>
                         <div className='relative'>
@@ -221,9 +222,9 @@ const YourFormComponent = () => {
                                 <div className='cursor-pointer p-1 absolute'>
                                     <button onClick={toggleVisibility}> <CloseIcon className='text-white z-1' /></button>
                                 </div>
-                                <h1 className='text-2xl text-center p-2 mt-10 font-bold text-white bg-sky-500 form'>Edit Order</h1>
+                                <h1 className='text-2xl text-center p-2 mt-10 font-bold text-white bg-gray-700 form'>Edit Order</h1>
                             </div>
-                            <form onSubmit={handleSubmit} className='p-3  bg-white'>
+                            <form onSubmit={handleSubmit} className='p-3  bg-gray-500'>
                                 <input
                                     type="text"
                                     value={name}
@@ -257,9 +258,8 @@ const YourFormComponent = () => {
                                         className="form-control mb-3"
                                     />
                                 </div>
-                                <select className='form-select mb-3' onChange={(e) => setFavoriteFood(e.target.value)} >
-                                    <option value="" className='hidden'></option>
-                                    <option value='no' disabled>Select Food</option>
+                                <select className='form-select mb-3 ' onChange={(e) => setFavoriteFood(e.target.value)} >
+                                    <option disabled selected>Select Food</option>
                                     <option value="Cake">Cake ₱120</option>
                                     <option value="Chocolate">Chocolate ₱75</option>
                                     <option value="Ice Cream">Ice Cream ₱90</option>
@@ -285,8 +285,8 @@ const YourFormComponent = () => {
                 </div>
             </div>
             <nav>
-                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white mb-3 bg-sky-500">
-                    <h1 className='text-2xl mb-2 font-bold'>CRUD React</h1>
+                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white mb-3 bg-gray-700">
+                    <h1 className='text-2xl mb-2 font-bold'>Foods CRUDS</h1>
                     <div className='gap-3 nav  flex md:text-xl'>
                         <a href="/" >Home </a>|
                         <a href="/form">Order </a>|
@@ -295,34 +295,36 @@ const YourFormComponent = () => {
                     </div>
                 </div>
             </nav>
-            <div className="flex justify-center mt-20">
-                <table className="table table-dark table-bordered lg:w-4/5">
+            <Container>
+                <div className="flex flex-wrap justify-between gap-3">
+                    <div>
+                        <div class=" input-wrapper">
+                            <button class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="25px" width="25px">
+                                    <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"></path>
+                                    <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M22 22L20 20"></path>
+                                </svg>
+                            </button>
+                            <input value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)} placeholder="search.." class="input" name="text" type="text" />
+                        </div>
+                    </div>
+                    <div className='flex flex-wrap gap-3'>
+                        <button onClick={handleDownload} className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded">
+                            <DownloadIcon /> Download Table
+                        </button>
+                        <button onClick={handleDeleteAll} className=" bg-red-500 hover:bg-red-600 text-white p-2 rounded">
+                            <DeleteIcon className='-mt-1' /> Delete All Order
+                        </button>
+                    </div>
+                </div>
+
+
+            </Container>
+            <div className="flex justify-center mt-3 ">
+                <table className="table table-dark table-bordered lg:w-11/12 blurd">
 
                     <thead>
-                        <tr>
-                            <td colSpan="9" >
-                                <div className='flex justify-between'>
-                                    <div class="input-wrapper">
-                                        <button class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="25px" width="25px">
-                                                <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"></path>
-                                                <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M22 22L20 20"></path>
-                                            </svg>
-                                        </button>
-                                        <input value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)} placeholder="search.." class="input" name="text" type="text" />
-                                    </div>
-                                    <div className='flex gap-3'>
-                                        <button onClick={handleDownload} className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded">
-                                            <DownloadIcon /> Download as Excel
-                                        </button>
-                                        <button onClick={handleDeleteAll} className="bg-red-500 hover:bg-red-600 text-white p-2 rounded">
-                                            <DeleteIcon className='-mt-1' /> Delete All Order
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
                         <tr class='hidden lg:table-row'>
                             <th className='text-center'>Name</th>
                             <th className='text-center'>Address</th>
@@ -348,7 +350,7 @@ const YourFormComponent = () => {
                                 <td data-label='price' className='text-center  '> {user.price}</td>
                                 <td data-label='quantity' className='text-center '> {user.quantity}</td>
                                 <td data-label='total' className='text-center '> {user.total}</td>
-                                <td  className='w-full md:w-32 text-center ' >
+                                <td className='w-full md:w-32 text-center ' >
                                     <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 p-2"><DeleteIcon className='-mt-1' />Delete</button>
                                 </td>
                                 <td className='w-full md:w-32 text-center'>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { getDatabase, ref, onValue, push, remove, update } from 'firebase/database';
 import './firebaseConfig';
 import { v4 as uuidv4 } from 'uuid';
-import * as XLSX from 'xlsx';
 import '../page/style/home.css';
 import '../page/style/form.css'
 function Contact() {
@@ -85,13 +84,24 @@ function Contact() {
     };
     return (
         <div className="Contact">
-            <div className="t-0 w-full h-full bg-gray-300 order-form absolute">
+            <nav className='absolute w-full z-1'>
+                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white  bg-gray-700">
+                    <h1 className='text-2xl mb-2 font-bold'>CRUD React</h1>
+                    <div className='gap-3 nav flex md:text-xl'>
+                        <a href="/">Home </a>|
+                        <a href="/form" className='active'>Order </a>|
+                        <a href="/table" >Table </a>|
+                        <a href="/inventory" >Inventory</a>
+                    </div>
+                </div>
+            </nav>
+            <div className="t-0 w-full h-full order-form blurd absolute">
                 <div className="flex items-center justify-center h-full">
                     <div>
                         <div className=''>
-                            <h1 className='text-2xl text-center p-2 font-bold text-white bg-sky-500 form'>Order Form</h1>
+                            <h1 className='text-2xl text-center p-2 font-bold text-white bg-gray-700 form'>Order Form</h1>
                         </div>
-                        <form onSubmit={handleSubmit} className='p-3 bg-white w-74'>
+                        <form onSubmit={handleSubmit} className='p-3 bg-gray-500 w-74'>
                             <input
                                 type="text"
                                 value={name}
@@ -123,7 +133,7 @@ function Contact() {
                                         }}
                                         placeholder="Contact Number"
                                         required
-                                        className="form-control mb-3"
+                                        className="form-control mb-3 lg:w-64"
                                     />
                                 </div>
                                 <select className='form-select mb-3 ' onChange={(e) => setFavoriteFood(e.target.value)} >
@@ -151,17 +161,7 @@ function Contact() {
                     </div>
                 </div>
             </div>
-            <nav>
-                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white mb-3 bg-sky-500">
-                    <h1 className='text-2xl mb-2 font-bold'>CRUD React</h1>
-                    <div className='gap-3 nav flex md:text-xl'>
-                        <a href="/">Home </a>|
-                        <a href="/form" className='active'>Order </a>|
-                        <a href="/table" >Table </a>|
-                        <a href="/inventory" >Inventory</a>
-                    </div>
-                </div>
-            </nav>
+
         </div>
     );
 }

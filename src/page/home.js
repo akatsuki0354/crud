@@ -1,11 +1,12 @@
+import { Container } from '@mui/material'
 import React from 'react'
 
 function home() {
     return (
-        <div>
+        <div className='home'>
             <nav>
-                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white mb-3 bg-sky-500">
-                    <h1 className='text-2xl mb-2 font-bold'>CRUD React</h1>
+                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white mb-3 bg-gray-800">
+                    <h1 className='text-2xl mb-2 font-bold'>Foods CRUDS</h1>
                     <div className='gap-3 nav  flex md:text-xl'>
                         <a href="/" className='active'>Home </a>|
                         <a href="/form">Order </a>|
@@ -15,17 +16,19 @@ function home() {
                 </div>
             </nav>
 
-            <div>
-                <div className='text-xl lg:text-3xl text-center mt-10'>
-                    <h1>Hello! Thanks For Visiting in my Webpage</h1>
+          <Container>
+          <div>
+                <div className='text-xl lg:text-3xl  mt-10'>
+                    <h1>Hello! Thanks For Visiting</h1>
                 </div>
-                <div className='flex justify-center  mt-10 '>
-                    <p className='w-96 text-center'>This Web Page is not Completely build but this is my my 70% of my skills, To this page 
+                <div className='flex  mt-10 '>
+                    <p className='w-96 '>This Web Page is not Completly build but this is my 70% of my skills, To this page 
                         im gonna show you how i code, and What i can do.
-                    </p>
+                    </p> 
                 </div>
 
             </div>
+          </Container>
         </div>
     )
 }
