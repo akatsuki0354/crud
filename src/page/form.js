@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getDatabase, ref, onValue, push, remove, update } from 'firebase/database';
+import React, { useState} from 'react';
+import { getDatabase, ref,set } from 'firebase/database';
 import './firebaseConfig';
 import { v4 as uuidv4 } from 'uuid';
 import '../page/style/home.css';
@@ -12,6 +12,9 @@ function Contact() {
     const [quantity, setQuantity] = useState(0)
     const [foodPrice, setFoodPrice] = useState(0);
     const [total, setTotal] = useState('');
+
+    const userId = uuidv4();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const contactRegex = /^\d{11}$/; // Regular expression for 10-digit contact number
@@ -19,10 +22,11 @@ function Contact() {
             alert('Please enter a valid 10-digit contact number.');
             return;
         }
-        const userId = uuidv4();
+        
         const db = getDatabase();
-        const usersRef = ref(db, 'users');
+        const usersRef = ref(db, `users/${userId}`);
         const newUser = {
+            uid: userId,
             username: name,
             quantity: quantity,
             total: total,
@@ -32,7 +36,7 @@ function Contact() {
             contact: contact
         };
 
-        push(usersRef, newUser)
+        set(usersRef, newUser)
             .then(() => {
                 console.log('User added successfully!');
                 // Reset form fields
@@ -84,11 +88,11 @@ function Contact() {
     };
     return (
         <div className="Contact">
-            <nav className='absolute w-full z-1'>
-                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white  bg-gray-700">
-                    <h1 className='text-2xl mb-2 font-bold'>CRUD React</h1>
-                    <div className='gap-3 nav flex md:text-xl'>
-                        <a href="/">Home </a>|
+            <nav>
+                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white absolute w-full z-1 bg-gray-800">
+                    <h1 className='text-2xl mb-2 font-bold'>FOODS <span className="text-orange-500">CRUD</span></h1>
+                    <div className='gap-3 nav  flex md:text-xl'>
+                        <a href="/" >Home </a>|
                         <a href="/form" className='active'>Order </a>|
                         <a href="/table" >Table </a>|
                         <a href="/inventory" >Inventory</a>
@@ -154,7 +158,7 @@ function Contact() {
                                 <input type="number" placeholder='₱ total' className='form-control ' value={total} disabled></input>
                             </div>
                             <br />
-                            <button type="submit" className="bg-green-600 hover:bg-green-500 text-white p-2 rounded">
+                            <button type="submit" className="bg-black hover:bg-green-500 text-white p-2 rounded">
                                 Submit
                             </button>
                         </form>

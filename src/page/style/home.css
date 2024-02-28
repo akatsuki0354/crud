@@ -3,12 +3,12 @@ nav .nav a{
 }
 
 nav .nav a:hover{
-    border-bottom: solid 1px white;
+    color: #f97316;
     transition: 0.3s;
 }
 
 nav .nav a.active{
-    border-bottom: solid 1px white;
+    color: #f97316;
     
 }
 

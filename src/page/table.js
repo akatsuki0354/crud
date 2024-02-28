@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { getDatabase, ref, onValue, push, remove, update } from 'firebase/database';
+import React, { useState, useEffect, useRef } from 'react'; // Importing useRef
+import { getDatabase, ref, onValue, remove, update } from 'firebase/database';
 import './firebaseConfig';
 import { v4 as uuidv4 } from 'uuid';
 import * as XLSX from 'xlsx';
 import '../page/style/home.css';
-import '../page/style/data.css'
+import '../page/style/data.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,17 +15,20 @@ const YourFormComponent = () => {
     const [users, setUsers] = useState([]);
     const [name, setName] = useState('');
     const [favoriteFood, setFavoriteFood] = useState('');
-    const [address, setAdress] = useState('')
-    const [contact, setContact] = useState('')
-    const [quantity, setQuantity] = useState(0)
+    const [address, setAddress] = useState(''); // Corrected typo
+    const [contact, setContact] = useState('');
+    const [quantity, setQuantity] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const [foodPrice, setFoodPrice] = useState(0);
     const [total, setTotal] = useState('');
     const [isVisible, setIsVisible] = useState(false);
-    const [isHide, setHide] = useState(true)
+    const [isHide, setHide] = useState(true); // Corrected state name
 
+    // New state to store the user ID being edited
+    const [editingUserId, setEditingUserId] = useState(null);
 
-
+    // Ref for form submission
+    const formRef = useRef(null);
 
 
     useEffect(() => {
@@ -51,48 +54,6 @@ const YourFormComponent = () => {
             getUsers();
         };
     }, [searchQuery]);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const contactRegex = /^\d{11}$/;
-        if (!contactRegex.test(contact)) {
-            alert('Please enter a valid 10-digit contact number.');
-            return;
-        }
-
-        const userId = uuidv4();
-
-        const db = getDatabase();
-        const usersRef = ref(db, 'users');
-
-        const newUser = {
-            username: name,
-            quantity: quantity,
-            total: total,
-            price: foodPrice,
-            favoriteFood: favoriteFood,
-            address: address,
-            contact: contact
-        };
-
-        push(usersRef, newUser)
-            .then(() => {
-                console.log('User added successfully!');
-                // Reset form fields
-                setName('');
-                setQuantity('')
-                setTotal('')
-                setContact('')
-                setAdress('')
-                setFavoriteFood('');
-                window.location.reload();
-            })
-            .catch((error) => {
-                console.error('Failed to add user:', error);
-            });
-    };
-
     const handleDeleteUser = (userId) => {
 
         const isConfirmed = window.confirm('Are you sure you want to delete this user?');
@@ -122,30 +83,54 @@ const YourFormComponent = () => {
         XLSX.writeFile(workbook, 'users.xlsx');
     };
 
+    const handleEditUser = ( userId, username,address,contact,quantity,total) => {
+        // Set the user data to the form fields
+        setName(username);
+        setEditingUserId(userId); // Store the user ID being edited
+        setContact(contact);
+        setQuantity(quantity)
+        setTotal(total)
+        
+        setAddress(address);
+        setIsVisible(true); // Show the edit form
+    };
 
-    const handleEditUser = (userId, field, value) => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         const db = getDatabase();
-        const userRef = ref(db, `users/${userId}`);
+        const userRef = ref(db, `users/${editingUserId}`);
 
-        const updatedUser = {
-            [field]: value,
-        };
-
-        update(userRef, updatedUser)
+        // Update user data in the database
+        update(userRef, {
+            username: name,
+            address: address,
+            favoriteFood: favoriteFood,
+            contact: contact,
+            quantity: quantity,
+            total: total
+        })
             .then(() => {
-                console.log('User updated successfully!');
-                // Update the form inputs with the existing user 
-                setIsVisible(!isVisible);
-                const editedUser = users.find(user => user.id === userId);
-                setName(editedUser.username);
-                setAdress(editedUser.address);
-                setContact(editedUser.contact);
-                setQuantity(editedUser.quantity);
+                alert('User data updated successfully!');
+                setIsVisible(false); // Hide the edit form
+                // Clear form fields
+                setName('');
+                setAddress('');
+                setFavoriteFood('');
+                setContact('');
+                setQuantity(0);
+                setTotal('');
+                setEditingUserId(null); // Clear the editing user ID
             })
             .catch((error) => {
-                console.error('Failed to update user:', error);
+                console.error('Failed to update user data:', error);
+                // Optionally provide feedback to the user
             });
     };
+
+
+
+
+
 
     const handleQuantityChange = (e) => {
         const quantityValue = parseInt(e.target.value);
@@ -215,16 +200,16 @@ const YourFormComponent = () => {
         <div className='blurd h-screen'>
             {/* edit */}
             <div className={isVisible ? 'block ' : 'hidden'}>
-                <div className={isHide ? 'block w-full h-full z-1 edit-form absolute' : 'hidden'} >
+                <div className={isHide ? 'block w-full h-full z-1 edit-form absolute' : 'hidden'}>
                     <div className='flex items-center justify-center h-full'>
                         <div className='relative'>
                             <div className=''>
                                 <div className='cursor-pointer p-1 absolute'>
                                     <button onClick={toggleVisibility}> <CloseIcon className='text-white z-1' /></button>
                                 </div>
-                                <h1 className='text-2xl text-center p-2 mt-10 font-bold text-white bg-gray-700 form'>Edit Order</h1>
+                                <h1 className='text-2xl text-center p-2 mt-10 font-bold text-white bg-sky-500 form'>Edit Order</h1>
                             </div>
-                            <form onSubmit={handleSubmit} className='p-3  bg-gray-500'>
+                            <form ref={formRef} onSubmit={handleSubmit} className='p-3  bg-white'> {/* Added ref */}
                                 <input
                                     type="text"
                                     value={name}
@@ -236,7 +221,7 @@ const YourFormComponent = () => {
                                 <input
                                     type="text"
                                     value={address}
-                                    onChange={(e) => setAdress(e.target.value)}
+                                    onChange={(e) => setAddress(e.target.value)}
                                     placeholder="Adress"
                                     required
                                     className="form-control mb-3"
@@ -258,8 +243,9 @@ const YourFormComponent = () => {
                                         className="form-control mb-3"
                                     />
                                 </div>
-                                <select className='form-select mb-3 ' onChange={(e) => setFavoriteFood(e.target.value)} >
-                                    <option disabled selected>Select Food</option>
+                                <select className='form-select mb-3' onChange={(e) => setFavoriteFood(e.target.value)} >
+                                    <option value="" className='hidden'></option>
+                                    <option value='no' disabled>Select Food</option>
                                     <option value="Cake">Cake ₱120</option>
                                     <option value="Chocolate">Chocolate ₱75</option>
                                     <option value="Ice Cream">Ice Cream ₱90</option>
@@ -354,7 +340,7 @@ const YourFormComponent = () => {
                                     <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 p-2"><DeleteIcon className='-mt-1' />Delete</button>
                                 </td>
                                 <td className='w-full md:w-32 text-center'>
-                                    <button onClick={() => handleEditUser(user.id, 'username', user.username, 'address', user.address)} className="bg-green-500 p-2">
+                                    <button onClick={() => handleEditUser(user.id, user.username, user.address, user.contact)} className="bg-green-500 p-2">
                                         <ModeEditIcon className='-mt-1' />Edit
                                     </button>
                                 </td>
