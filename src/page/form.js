@@ -1,5 +1,5 @@
-import React, { useState} from 'react';
-import { getDatabase, ref,set } from 'firebase/database';
+import React, { useState } from 'react';
+import { getDatabase, ref, set } from 'firebase/database';
 import './firebaseConfig';
 import { v4 as uuidv4 } from 'uuid';
 import '../page/style/home.css';
@@ -22,7 +22,7 @@ function Contact() {
             alert('Please enter a valid 10-digit contact number.');
             return;
         }
-        
+
         const db = getDatabase();
         const usersRef = ref(db, `users/${userId}`);
         const newUser = {
@@ -89,7 +89,7 @@ function Contact() {
     return (
         <div className="Contact">
             <nav>
-                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white absolute w-full z-1 bg-gray-800">
+                <div className="p-3 flex flex-wrap justify-center md:justify-between text-white w-full z-1 bg-gray-800">
                     <h1 className='text-2xl mb-2 font-bold'>FOODS <span className="text-orange-500">CRUD</span></h1>
                     <div className='gap-3 nav  flex md:text-xl'>
                         <a href="/" >Home </a>|
@@ -98,14 +98,18 @@ function Contact() {
                         <a href="/inventory" >Inventory</a>
                     </div>
                 </div>
+
             </nav>
             <div className="t-0 w-full h-full order-form blurd absolute">
-                <div className="flex items-center justify-center h-full">
+            <div className='relative md:hidden mt-10 z-2' >
+                    <h1 className='text-4xl text-center p-2 font-bold text-white form'>Order Form</h1>
+                </div>
+                <div className="flex items-center justify-center md:h-full">
                     <div>
-                        <div className=''>
+                        <div className='hidden md:block'>
                             <h1 className='text-2xl text-center p-2 font-bold text-white bg-gray-700 form'>Order Form</h1>
                         </div>
-                        <form onSubmit={handleSubmit} className='p-3 bg-gray-500 w-74'>
+                        <form onSubmit={handleSubmit} className='p-3 mt-10 md:mt-0 md:bg-gray-500 w-74'>
                             <input
                                 type="text"
                                 value={name}
@@ -122,7 +126,7 @@ function Contact() {
                                 required
                                 className="form-control mb-3"
                             />
-                            <div className="flex flex gap-3">
+                            <div className="md:flex gap-3">
                                 <div className='flex gap-2'>
                                     <label htmlFor="" className='mt-2'>+63</label>
                                     <input

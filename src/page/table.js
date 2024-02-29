@@ -15,14 +15,14 @@ const YourFormComponent = () => {
     const [users, setUsers] = useState([]);
     const [name, setName] = useState('');
     const [favoriteFood, setFavoriteFood] = useState('');
-    const [address, setAddress] = useState(''); // Corrected typo
+    const [address, setAddress] = useState(''); 
     const [contact, setContact] = useState('');
     const [quantity, setQuantity] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const [foodPrice, setFoodPrice] = useState(0);
     const [total, setTotal] = useState('');
     const [isVisible, setIsVisible] = useState(false);
-    const [isHide, setHide] = useState(true); // Corrected state name
+    const [isHide, setHide] = useState(true);
 
     // New state to store the user ID being edited
     const [editingUserId, setEditingUserId] = useState(null);
@@ -48,7 +48,6 @@ const YourFormComponent = () => {
             });
         };
         getUsers();
-        // Cleanup the event listener
         return () => {
 
             getUsers();
@@ -58,7 +57,7 @@ const YourFormComponent = () => {
 
         const isConfirmed = window.confirm('Are you sure you want to delete this user?');
 
-        // Check if the user confirmed
+        // Check if the user confirmed to delete data
         if (isConfirmed) {
             const db = getDatabase();
             const userRef = ref(db, `users/${userId}`);
@@ -90,9 +89,8 @@ const YourFormComponent = () => {
         setContact(contact);
         setQuantity(quantity)
         setTotal(total)
-        
         setAddress(address);
-        setIsVisible(true); // Show the edit form
+        setIsVisible(true); 
     };
 
     const handleSubmit = (e) => {
@@ -111,19 +109,19 @@ const YourFormComponent = () => {
         })
             .then(() => {
                 alert('User data updated successfully!');
-                setIsVisible(false); // Hide the edit form
-                // Clear form fields
+                setIsVisible(false); 
+            
                 setName('');
                 setAddress('');
                 setFavoriteFood('');
                 setContact('');
                 setQuantity(0);
                 setTotal('');
-                setEditingUserId(null); // Clear the editing user ID
+                setEditingUserId(null); 
             })
             .catch((error) => {
                 console.error('Failed to update user data:', error);
-                // Optionally provide feedback to the user
+
             });
     };
 
@@ -207,9 +205,9 @@ const YourFormComponent = () => {
                                 <div className='cursor-pointer p-1 absolute'>
                                     <button onClick={toggleVisibility}> <CloseIcon className='text-white z-1' /></button>
                                 </div>
-                                <h1 className='text-2xl text-center p-2 mt-10 font-bold text-white bg-sky-500 form'>Edit Order</h1>
+                                <h1 className='text-2xl text-center p-2 mt-10 font-bold text-white bg-gray-700 form'>Edit Order</h1>
                             </div>
-                            <form ref={formRef} onSubmit={handleSubmit} className='p-3  bg-white'> {/* Added ref */}
+                            <form ref={formRef} onSubmit={handleSubmit} className='p-3  bg-gray-500'> {/* Added ref */}
                                 <input
                                     type="text"
                                     value={name}
@@ -243,9 +241,8 @@ const YourFormComponent = () => {
                                         className="form-control mb-3"
                                     />
                                 </div>
-                                <select className='form-select mb-3' onChange={(e) => setFavoriteFood(e.target.value)} >
-                                    <option value="" className='hidden'></option>
-                                    <option value='no' disabled>Select Food</option>
+                                <select className='form-select mb-3 ' onChange={(e) => setFavoriteFood(e.target.value)} >
+                                    <option disabled selected>Select Food</option>
                                     <option value="Cake">Cake ₱120</option>
                                     <option value="Chocolate">Chocolate ₱75</option>
                                     <option value="Ice Cream">Ice Cream ₱90</option>
@@ -262,7 +259,7 @@ const YourFormComponent = () => {
 
                                 </div>
                                 <br />
-                                <button type="submit" className="bg-green-600 hover:bg-green-500 text-white p-2 rounded">
+                                <button type="submit" className="bg-black hover:bg-black text-white p-2 rounded">
                                     Submit
                                 </button>
                             </form>
