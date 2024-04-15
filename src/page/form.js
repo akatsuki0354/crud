@@ -114,7 +114,7 @@ function Contact() {
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                placeholder="Full Name"
+                                placeholder="barcode"
                                 required
                                 className="form-control mb-3"
                             />
