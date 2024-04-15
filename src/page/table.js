@@ -212,7 +212,7 @@ const YourFormComponent = () => {
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    placeholder="Name"
+                                    placeholder="barcode"
                                     required
                                     className="form-control mb-3"
                                 />
